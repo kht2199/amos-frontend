@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { loadGLTF } from "../lib/loaders";
 
 /* ============================================================================
  * Type Definitions
@@ -390,10 +390,11 @@ export default function Campus3D() {
 		scene.add(moonMesh);
 		moonMeshRef.current = moonMesh;
 
-		const loader = new GLTFLoader();
-		loader.load(
-			"/campus.gltf",
-			(gltf) => {
+		loadGLTF("/campus.gltf", (progress) => {
+			if (progress.total > 0)
+				setLoadProgress(Math.round((progress.loaded / progress.total) * 100));
+		})
+			.then((gltf) => {
 				const model = gltf.scene;
 				model.scale.set(0.9, 0.9, 0.9);
 
@@ -553,16 +554,11 @@ export default function Campus3D() {
 				warningsRef.current = warnings;
 				windowsRef.current = windows;
 				setLoading(false);
-			},
-			(progress) => {
-				if (progress.total > 0)
-					setLoadProgress(Math.round((progress.loaded / progress.total) * 100));
-			},
-			(error) => {
+			})
+			.catch((error: unknown) => {
 				console.error("GLTF Load Error:", error);
 				setLoading(false);
-			},
-		);
+			});
 
 		const raycaster = new THREE.Raycaster();
 		const mouse = new THREE.Vector2();
