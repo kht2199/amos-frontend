@@ -14,7 +14,7 @@ export default function AntdAlertHistory() {
 			columns={antdColumns}
 			dataSource={dataSource}
 			rowKey="id"
-			pagination={{ pageSize: 20, showSizeChanger: true }}
+			pagination={{ pageSize: 20 }}
 		/>
 	);
 }
