@@ -2,23 +2,6 @@
  * Type Definitions
  * ============================================================================ */
 
-export interface BuildingSpec {
-	floors?: string; // 건물 층수
-	process?: string; // 반도체 공정 종류 (예: "1a/1b nm")
-	size?: string; // 건물 평면 크기 (가로×세로)
-	logistics?: string; // 물류 시스템 유형 (예: AMHS)
-	role?: string; // 건물의 역할 또는 기능
-	link?: string; // 연결된 설비/시스템 (예: M16 OHT)
-}
-
-export interface BuildingInfo {
-	type: string; // 건물 종류 레이블 (예: "DRAM 생산동")
-	color: number; // 라벨/스프라이트에 사용될 hex 색상값
-	detail: string; // 툴팁 패널에 표시할 상세 설명 (줄바꿈 포함)
-	specs: BuildingSpec; // 건물 세부 사양 키-값 쌍
-	processFlow: string[]; // 공정 순서 배열 (패널 하단에 화살표로 표시)
-}
-
 export interface SkyParams {
 	r: number; // 배경 하늘색 R 채널 (0~1)
 	g: number; // 배경 하늘색 G 채널 (0~1)

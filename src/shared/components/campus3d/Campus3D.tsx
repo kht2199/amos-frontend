@@ -1,8 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import * as THREE from "three";
-import BuildingPanel from "./BuildingPanel";
-import { BUILDING_DATA, BUILDING_NAMES, getSkyParams } from "./buildingData";
-import type { BuildingInfo, TimeMode } from "./types";
+import { getSkyParams } from "./buildingData";
+import type { TimeMode } from "./types";
 import { useBuildingClick } from "./useBuildingClick";
 import { useGLTFModel } from "./useGLTFModel";
 import { ANGLE_STEP, CAM_POS, CAM_TARGET, useScene } from "./useScene";
@@ -13,7 +19,11 @@ import { ANGLE_STEP, CAM_POS, CAM_TARGET, useScene } from "./useScene";
  * 씬 초기화(useScene), 모델 로드(useGLTFModel), 클릭 처리(useBuildingClick)를
  * 조합하고, 애니메이션 루프와 UI를 렌더링한다.
  * ============================================================================ */
-export default function Campus3D() {
+export interface Campus3DRef {
+	setWarningBuildings: (names: string[]) => void;
+}
+
+const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 	const mountRef = useRef<HTMLDivElement>(null);
 	const animFrameRef = useRef<number | null>(null);
 	const startTimeRef = useRef<number>(Date.now());
@@ -29,14 +39,10 @@ export default function Campus3D() {
 	const camInputFocusedRef = useRef(false);
 
 	// ── 상태 ──
+	const [warningSelection, setWarningSelection] = useState<string[]>([]);
 	const [timeMode, setTimeMode] = useState<TimeMode>("morning");
 	const timeModeRef = useRef<TimeMode>("morning");
-	const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
-	const [panelData, setPanelData] = useState<BuildingInfo | null>(null);
-	const [panelPos, setPanelPos] = useState<{ x: number; y: number }>({
-		x: 0,
-		y: 0,
-	});
+	const [, setSelectedBuilding] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [loadProgress, setLoadProgress] = useState<number>(0);
 	const [focusBuilding, setFocusBuilding] = useState<string>("");
@@ -57,22 +63,19 @@ export default function Campus3D() {
 		moonMeshRef,
 	} = useScene(mountRef);
 
-	const { buildingGroupsRef, busesRef, warningsRef, windowsRef, smokesRef } =
-		useGLTFModel(sceneRef, setLoading, setLoadProgress);
+	const {
+		buildingGroupsRef,
+		buildingNames,
+		warningsRef,
+		windowsRef,
+		smokesRef,
+		warningMeshesRef,
+		setWarningBuildings,
+	} = useGLTFModel(sceneRef, setLoading, setLoadProgress);
 
-	// ── 건물 선택 핸들러 ──
-	const handleBuildingClick = useCallback((name: string) => {
-		const data = BUILDING_DATA[name];
-		if (data) {
-			setSelectedBuilding(name);
-			setPanelData(data);
-		}
-	}, []);
-
-	const closePanel = useCallback(() => {
-		setSelectedBuilding(null);
-		setPanelData(null);
-	}, []);
+	useImperativeHandle(ref, () => ({ setWarningBuildings }), [
+		setWarningBuildings,
+	]);
 
 	const handleFocusBuilding = useCallback(
 		(name: string) => {
@@ -85,9 +88,8 @@ export default function Campus3D() {
 			box.getCenter(center);
 			controlsRef.current.target.copy(center);
 			controlsRef.current.update();
-			handleBuildingClick(name);
 		},
-		[handleBuildingClick, controlsRef, buildingGroupsRef],
+		[controlsRef, buildingGroupsRef],
 	);
 
 	useBuildingClick(
@@ -95,8 +97,6 @@ export default function Campus3D() {
 		cameraRef,
 		buildingGroupsRef,
 		setSelectedBuilding,
-		setPanelData,
-		setPanelPos,
 	);
 
 	// ── 애니메이션 루프 ──
@@ -208,27 +208,11 @@ export default function Campus3D() {
 					0.15 + Math.sin(elapsed * 0.003) * 0.05;
 			});
 
-			// ── 버스 왕복 이동: _prog(0~1)를 _fwd 방향으로 증가시켜 x축 80 범위 왕복 ──
-			busesRef.current.forEach((bus) => {
-				if (!bus.userData._init) {
-					// 최초 1회만 초기화: 시작 진행도·방향·속도·원점 x 저장
-					bus.userData._init = true;
-					bus.userData._prog = Math.random(); // 0~1 무작위 시작 위치
-					bus.userData._fwd = Math.random() > 0.5 ? 1 : -1; // 초기 진행 방향
-					bus.userData._spd = 0.5 + Math.random() * 0.5; // 개별 속도 변화
-					bus.userData._ox = bus.position.x; // GLTF 원점 x 저장
-				}
-				bus.userData._prog += bus.userData._spd * 0.002 * bus.userData._fwd;
-				if (bus.userData._prog >= 1) {
-					bus.userData._prog = 1;
-					bus.userData._fwd = -1; // 끝에 도달하면 방향 반전
-				}
-				if (bus.userData._prog <= 0) {
-					bus.userData._prog = 0;
-					bus.userData._fwd = 1; // 시작점에 도달하면 방향 반전
-				}
-				// _prog 0.5 기준 ±40 범위(총 80)로 x 위치 결정
-				bus.position.x = bus.userData._ox + (bus.userData._prog - 0.5) * 80;
+			// ── 경고 건물 점멸: sin 파형으로 0.05↔0.8 emissiveIntensity 부드럽게 전환 ──
+			warningMeshesRef.current.forEach((mesh) => {
+				if (!mesh.material || !("emissiveIntensity" in mesh.material)) return;
+				(mesh.material as THREE.MeshStandardMaterial).emissiveIntensity =
+					0.05 + ((Math.sin(elapsed * 0.005) + 1) / 2) * 0.75;
 			});
 
 			// ── 창문 재질 전환: 야간에는 노란 발광, 주간에는 파란 반투명 유리 ──
@@ -304,11 +288,10 @@ export default function Campus3D() {
 		}
 		animate();
 
-		// ── Escape 키로 패널 닫기 ──
+		// ── Escape 키로 선택 해제 ──
 		function onKeyDown(e: KeyboardEvent) {
 			if (e.key === "Escape") {
 				setSelectedBuilding(null);
-				setPanelData(null);
 			}
 		}
 		document.addEventListener("keydown", onKeyDown);
@@ -325,10 +308,10 @@ export default function Campus3D() {
 		lightsRef,
 		sunMeshRef,
 		moonMeshRef,
-		busesRef,
 		warningsRef,
 		windowsRef,
 		smokesRef,
+		warningMeshesRef,
 	]);
 
 	const timeModes: { value: TimeMode; label: string }[] = [
@@ -439,7 +422,7 @@ export default function Campus3D() {
 					}}
 				>
 					<option value="">건물 선택...</option>
-					{BUILDING_NAMES.map((n) => (
+					{buildingNames.map((n) => (
 						<option key={n} value={n}>
 							{n}
 						</option>
@@ -635,6 +618,38 @@ export default function Campus3D() {
 						</label>
 					);
 				})}
+
+				{/* 경고 건물 다중 선택 */}
+				<select
+					multiple
+					value={warningSelection}
+					onChange={(e) => {
+						const selected = Array.from(e.target.selectedOptions).map(
+							(o) => o.value,
+						);
+						setWarningSelection(selected);
+						setWarningBuildings(selected);
+					}}
+					style={{
+						background: "rgba(10,10,20,0.85)",
+						color: "#f87171",
+						border: "1px solid rgba(248,113,113,0.3)",
+						borderRadius: 8,
+						padding: "4px 8px",
+						fontSize: 12,
+						fontFamily: "'Noto Sans KR', sans-serif",
+						backdropFilter: "blur(12px)",
+						height: 70,
+						outline: "none",
+						minWidth: 120,
+					}}
+				>
+					{buildingNames.map((n) => (
+						<option key={n} value={n}>
+							{n}
+						</option>
+					))}
+				</select>
 			</div>
 
 			{/* 상단 우측: 카메라 리셋 버튼 */}
@@ -667,20 +682,12 @@ export default function Campus3D() {
 				&#8634; Reset
 			</button>
 
-			{/* 건물 정보 패널 */}
-			{selectedBuilding && panelData && (
-				<BuildingPanel
-					selectedBuilding={selectedBuilding}
-					panelData={panelData}
-					panelPos={panelPos}
-					onClose={closePanel}
-				/>
-			)}
-
 			<style>{`
         @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         select option { background: #0a0a14; color: #ddd; }
       `}</style>
 		</div>
 	);
-}
+});
+
+export default Campus3D;
