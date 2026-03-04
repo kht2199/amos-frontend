@@ -21,20 +21,22 @@ export function useBuildingClick(
 	// biome-ignore lint/correctness/useExhaustiveDependencies: all ref arguments are stable refs
 	useEffect(() => {
 		const renderer = rendererRef.current;
-		const camera = cameraRef.current;
-		if (!renderer || !camera) return;
+		if (!renderer) return;
 
 		const raycaster = new THREE.Raycaster();
 		const mouse = new THREE.Vector2();
 
 		// ── onClick: 레이캐스터로 클릭된 건물을 판별해 정보 패널 표시 ──
 		function onClick(event: MouseEvent) {
+			if (!rendererRef.current || !cameraRef.current) return;
 			// 마우스 좌표를 NDC(-1~1) 공간으로 변환
-			const rect = renderer.domElement.getBoundingClientRect();
+			const rect = rendererRef.current.domElement.getBoundingClientRect();
 			mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
 			mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-			raycaster.setFromCamera(mouse, camera);
-			for (const [name, group] of Object.entries(buildingGroupsRef.current)) {
+			raycaster.setFromCamera(mouse, cameraRef.current);
+			for (const [name, group] of Object.entries(
+				buildingGroupsRef.current ?? {},
+			)) {
 				const intersects = raycaster.intersectObjects(group.children, true);
 				if (intersects.length > 0) {
 					const data = BUILDING_DATA[name];
@@ -44,7 +46,7 @@ export function useBuildingClick(
 						box.getCenter(center);
 						center.y = box.max.y; // 패널을 건물 상단 기준으로 배치
 						// 3D 월드 좌표를 화면 2D 픽셀 좌표로 투영
-						const screenPos = center.clone().project(camera);
+						const screenPos = center.clone().project(cameraRef.current);
 						const sx = (screenPos.x * 0.5 + 0.5) * rect.width;
 						const sy = (-screenPos.y * 0.5 + 0.5) * rect.height;
 						setPanelPos({ x: sx, y: sy });
@@ -58,19 +60,20 @@ export function useBuildingClick(
 
 		// ── onMouseMove: 건물 위에 마우스가 있으면 커서를 pointer로 변경 ──
 		function onMouseMove(event: MouseEvent) {
-			const rect = renderer.domElement.getBoundingClientRect();
+			if (!rendererRef.current || !cameraRef.current) return;
+			const rect = rendererRef.current.domElement.getBoundingClientRect();
 			mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
 			mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-			raycaster.setFromCamera(mouse, camera);
+			raycaster.setFromCamera(mouse, cameraRef.current);
 			let found = false;
-			for (const [, group] of Object.entries(buildingGroupsRef.current)) {
+			for (const [, group] of Object.entries(buildingGroupsRef.current ?? {})) {
 				if (raycaster.intersectObjects(group.children, true).length > 0) {
-					renderer.domElement.style.cursor = "pointer"; // 건물 위: 손가락 커서
+					rendererRef.current.domElement.style.cursor = "pointer"; // 건물 위: 손가락 커서
 					found = true;
 					break;
 				}
 			}
-			if (!found) renderer.domElement.style.cursor = "default";
+			if (!found) rendererRef.current.domElement.style.cursor = "default";
 		}
 
 		renderer.domElement.addEventListener("click", onClick);
