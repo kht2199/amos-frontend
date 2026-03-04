@@ -102,16 +102,7 @@ export function useScene(mountRef: React.RefObject<HTMLDivElement | null>) {
 		dirLight.shadow.normalBias = 0.02; // 곡면 그림자 오프셋 보정
 		scene.add(dirLight);
 
-		// 반구광: 하늘(위)과 지면(아래)에서 오는 환경 반사광 시뮬레이션
-		const hemi = new THREE.HemisphereLight(0xaaccee, 0x556677, 1.2);
-		scene.add(hemi);
-
-		// 포인트라이트: 중심부에 배치해 국소 반사 하이라이트 추가
-		const pointLight = new THREE.PointLight(0x4488ff, 0.5, 600);
-		pointLight.position.set(200, 150, 300);
-		scene.add(pointLight);
-
-		lightsRef.current = { ambient, dirLight, hemi };
+		lightsRef.current = { ambient, dirLight };
 
 		// ── 태양 메시: 코어(22) + 1차 글로우(35, 30%) + 2차 글로우(50, 12%) ──
 		const sunMesh = new THREE.Mesh(
