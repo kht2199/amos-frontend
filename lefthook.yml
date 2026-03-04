@@ -1,6 +1,6 @@
 pre-commit:
   jobs:
     - name: tsc
-      run: pnpm tsc --noEmit
+      run: pnpm tsc -b --noEmit
     - name: biome check
       run: pnpm biome check .
