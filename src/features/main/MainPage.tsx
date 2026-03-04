@@ -1,6 +1,6 @@
 import { Flex } from "antd";
 import AlarmPanel from "../../shared/components/AlarmPanel";
-import Campus3D from "../../shared/components/Campus3D";
+import Campus3D from "../../shared/components/campus3d/Campus3D";
 
 export default function MainPage() {
 	return (
