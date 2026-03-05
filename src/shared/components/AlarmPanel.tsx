@@ -1,4 +1,15 @@
-import { Badge, Card, Divider, Flex, Statistic, Tag, Typography } from "antd";
+import {
+	Badge,
+	Card,
+	Divider,
+	Flex,
+	Statistic,
+	Tabs,
+	Tag,
+	Typography,
+} from "antd";
+import { useState } from "react";
+import TrendPanel from "./TrendPanel";
 
 type AlarmState = "error" | "warning" | "normal";
 
@@ -222,29 +233,9 @@ function AlarmCardItem({ card, level }: { card: AlarmCard; level: number }) {
 	);
 }
 
-export default function AlarmPanel() {
+function TodaysAlarmContent() {
 	return (
-		<div
-			style={{
-				minWidth: 280,
-				width: "max-content",
-				flexShrink: 0,
-				height: "calc(100vh - 64px)",
-				overflowY: "hidden",
-				padding: "0 10px",
-				background: "#fafafa",
-				borderLeft: "1px solid #e8e8e8",
-			}}
-		>
-			<Divider
-				orientation="left"
-				orientationMargin={0}
-				plain
-				style={{ margin: "0 0 10px", fontSize: 14, fontWeight: 700 }}
-			>
-				Today's Alarm
-			</Divider>
-
+		<>
 			<Flex gap={4} style={{ marginBottom: 16 }}>
 				{LEVEL_COUNTS.map((lv) => (
 					<LevelSummaryCard key={lv.label} {...lv} />
@@ -266,6 +257,42 @@ export default function AlarmPanel() {
 					))}
 				</div>
 			))}
+		</>
+	);
+}
+
+export default function AlarmPanel() {
+	const [activeTab, setActiveTab] = useState("alarm");
+
+	return (
+		<div
+			style={{
+				width: 300,
+				flexShrink: 0,
+				height: "calc(100vh - 64px)",
+				overflowY: "auto",
+				background: "#fafafa",
+				borderLeft: "1px solid #e8e8e8",
+			}}
+		>
+			<Tabs
+				activeKey={activeTab}
+				onChange={setActiveTab}
+				size="small"
+				style={{ padding: "0 10px" }}
+				items={[
+					{
+						key: "alarm",
+						label: "Today's Alarm",
+						children: <TodaysAlarmContent />,
+					},
+					{
+						key: "trend",
+						label: "Trend",
+						children: <TrendPanel isActive={activeTab === "trend"} />,
+					},
+				]}
+			/>
 		</div>
 	);
 }
