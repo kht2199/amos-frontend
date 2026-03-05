@@ -1,5 +1,5 @@
 import type { MenuProps } from "antd";
-import { Layout, Menu } from "antd";
+import { ConfigProvider, Layout, Menu } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
 const { Header, Content } = Layout;
@@ -40,15 +40,29 @@ export default function DefaultLayout() {
 
 	return (
 		<Layout style={{ minHeight: "100vh" }}>
-			<Header style={{ display: "flex", alignItems: "center" }}>
-				<Menu
-					theme="dark"
-					mode="horizontal"
-					selectedKeys={[location.pathname]}
-					items={navItems}
-					onClick={onClick}
-					style={{ flex: 1, justifyContent: "space-evenly" }}
-				/>
+			<Header
+				style={{ display: "flex", alignItems: "center", padding: "0 24px" }}
+			>
+				<ConfigProvider
+					theme={{
+						components: {
+							Menu: {
+								darkItemBg: "transparent",
+								darkPopupBg: "#001529",
+								itemMarginInline: 20,
+							},
+						},
+					}}
+				>
+					<Menu
+						theme="dark"
+						mode="horizontal"
+						selectedKeys={[location.pathname]}
+						items={navItems}
+						onClick={onClick}
+						style={{ flex: 1, justifyContent: "center" }}
+					/>
+				</ConfigProvider>
 			</Header>
 			<Content style={{ padding: 0, background: "#001529" }}>
 				<Outlet />
