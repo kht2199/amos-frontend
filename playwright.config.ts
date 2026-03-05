@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-	testMatch: "check-console.spec.ts",
+	testMatch: "*.pw.ts",
 	timeout: 60000,
 	use: {
 		...devices["Desktop Chrome"],

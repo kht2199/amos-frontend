@@ -40,16 +40,15 @@ export default function DefaultLayout() {
 
 	return (
 		<Layout style={{ minHeight: "100vh" }}>
-			<Header
-				style={{ display: "flex", alignItems: "center", padding: "0 24px" }}
-			>
+			<Header style={{ display: "flex", alignItems: "center", padding: 0 }}>
 				<ConfigProvider
 					theme={{
 						components: {
 							Menu: {
 								darkItemBg: "transparent",
 								darkPopupBg: "#001529",
-								itemMarginInline: 20,
+								itemMarginInline: 0,
+								itemPaddingInline: 40,
 							},
 						},
 					}}
