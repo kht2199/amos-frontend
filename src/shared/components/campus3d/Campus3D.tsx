@@ -23,6 +23,23 @@ export interface Campus3DRef {
 	setWarningBuildings: (names: string[]) => void;
 }
 
+// 건물별 기본 정보 (클릭 팝업 + 상시 라벨에 사용)
+const BUILDING_INFO: Record<
+	string,
+	{ title: string; desc: string; location: string }
+> = {
+	m14: {
+		title: "M14 — Manufacturing Unit",
+		desc: "Capacity: 240 lots/day · Status: Running",
+		location: "Zone B, Bay 14",
+	},
+	m16: {
+		title: "M16 — Assembly Line",
+		desc: "Capacity: 180 lots/day · Status: Warning",
+		location: "Zone C, Bay 16",
+	},
+};
+
 const MM_SIZE = 180; // 미니맵 CSS px 크기
 const MM_MARGIN = 12; // 우측 하단 여백
 const MM_ORTHO_HALF = 500; // 미니맵 OrthographicCamera 절반 시야 (world units)
@@ -48,6 +65,8 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 		minimapCameraRef.current = cam;
 	}
 	const minimap2dRef = useRef<HTMLCanvasElement>(null);
+	// 상시 표시 건물 라벨: animate loop에서 직접 style 수정
+	const buildingLabelRefs = useRef<Record<string, HTMLDivElement | null>>({});
 	// 건물 박스 캐시: 4개 XZ 코너 + 센터 (로드 완료 후 1회 계산)
 	const buildingBoxesRef = useRef<
 		Record<string, { corners: THREE.Vector3[]; center: THREE.Vector3 }>
@@ -67,7 +86,11 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 	const [warningSelection, setWarningSelection] = useState<string[]>([]);
 	const [timeMode, setTimeMode] = useState<TimeMode>("morning");
 	const timeModeRef = useRef<TimeMode>("morning");
-	const [, setSelectedBuilding] = useState<string | null>(null);
+	const [buildingPopup, setBuildingPopup] = useState<{
+		name: string;
+		x: number;
+		y: number;
+	} | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [loadProgress, setLoadProgress] = useState<number>(0);
 	const [focusBuilding, setFocusBuilding] = useState<string>("");
@@ -208,12 +231,11 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 		[controlsRef, buildingGroupsRef],
 	);
 
-	useBuildingClick(
-		rendererRef,
-		cameraRef,
-		buildingGroupsRef,
-		setSelectedBuilding,
-	);
+	useBuildingClick(rendererRef, cameraRef, buildingGroupsRef, (name, x, y) => {
+		if (name && x !== undefined && y !== undefined)
+			setBuildingPopup({ name, x, y });
+		else setBuildingPopup(null);
+	});
 
 	// ── 애니메이션 루프 ──
 	useEffect(() => {
@@ -402,6 +424,26 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 
 			renderer.render(scene, camera);
 
+			// ── 상시 건물 라벨 위치 갱신 (3D→2D 투영) ──
+			const cw = renderer.domElement.clientWidth;
+			const ch = renderer.domElement.clientHeight;
+			for (const [name, el] of Object.entries(buildingLabelRefs.current)) {
+				if (!el) continue;
+				const box = buildingBoxesRef.current[name];
+				if (!box) {
+					el.style.display = "none";
+					continue;
+				}
+				const proj = box.center.clone().project(camera);
+				if (proj.z > 1) {
+					el.style.display = "none";
+					continue;
+				}
+				el.style.left = `${(proj.x * 0.5 + 0.5) * cw}px`;
+				el.style.top = `${(1 - (proj.y * 0.5 + 0.5)) * ch - 32}px`;
+				el.style.display = "block";
+			}
+
 			// ── 미니맵 렌더 (scissor test + OrthographicCamera 탑다운) ──
 			const mmCam = minimapCameraRef.current;
 			if (mmCam) {
@@ -500,9 +542,7 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 
 		// ── Escape 키로 선택 해제 ──
 		function onKeyDown(e: KeyboardEvent) {
-			if (e.key === "Escape") {
-				setSelectedBuilding(null);
-			}
+			if (e.key === "Escape") setBuildingPopup(null);
 		}
 		document.addEventListener("keydown", onKeyDown);
 
@@ -889,6 +929,96 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 			>
 				&#8634; Reset
 			</button>
+
+			{/* 상시 건물 라벨 (m14, m16) */}
+			{Object.keys(BUILDING_INFO).map((name) => {
+				const info = BUILDING_INFO[name];
+				return (
+					<div
+						key={name}
+						ref={(el) => {
+							buildingLabelRefs.current[name] = el;
+						}}
+						style={{
+							position: "absolute",
+							display: "none",
+							transform: "translateX(-50%)",
+							pointerEvents: "none",
+							zIndex: 60,
+							textAlign: "center",
+						}}
+					>
+						<div
+							style={{
+								background: "rgba(10,12,24,0.82)",
+								border: "1px solid rgba(255,255,255,0.15)",
+								borderRadius: 6,
+								padding: "4px 10px",
+								backdropFilter: "blur(8px)",
+							}}
+						>
+							<div style={{ color: "#fff", fontWeight: 700, fontSize: 12 }}>
+								{info.title.split(" — ")[0]}
+							</div>
+							<div style={{ color: "#69c0ff", fontSize: 10 }}>
+								{info.location}
+							</div>
+						</div>
+						<div
+							style={{
+								width: 1,
+								height: 8,
+								background: "rgba(255,255,255,0.4)",
+								margin: "0 auto",
+							}}
+						/>
+					</div>
+				);
+			})}
+
+			{/* 건물 클릭 팝업 */}
+			{buildingPopup &&
+				(() => {
+					const info = BUILDING_INFO[buildingPopup.name];
+					return (
+						<div
+							style={{
+								position: "absolute",
+								left: buildingPopup.x + 14,
+								top: buildingPopup.y - 10,
+								zIndex: 200,
+								background: "rgba(10,12,24,0.92)",
+								border: "1px solid rgba(255,255,255,0.15)",
+								borderRadius: 8,
+								padding: "10px 14px",
+								backdropFilter: "blur(12px)",
+								minWidth: 200,
+								pointerEvents: "none",
+							}}
+						>
+							<div
+								style={{
+									color: "#fff",
+									fontWeight: 700,
+									fontSize: 13,
+									marginBottom: 4,
+								}}
+							>
+								{info?.title ?? buildingPopup.name}
+							</div>
+							{info?.desc && (
+								<div style={{ color: "#ddd", fontSize: 11, marginBottom: 6 }}>
+									{info.desc}
+								</div>
+							)}
+							{info?.location && (
+								<div style={{ color: "#69c0ff", fontSize: 10 }}>
+									📍 {info.location}
+								</div>
+							)}
+						</div>
+					);
+				})()}
 
 			{/* 미니맵 컨테이너 */}
 			{/* biome-ignore lint/a11y/noStaticElementInteractions: minimap is a visual control */}
