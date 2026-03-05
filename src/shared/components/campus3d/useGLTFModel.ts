@@ -79,31 +79,18 @@ export function useGLTFModel(
 			.then((gltf) => {
 				const model = gltf.scene;
 				model.scale.set(0.9, 0.9, 0.9);
-				model.traverse((child) =>
-					console.log(child.name, child.type, child.userData),
-				);
-
-				// GLTF에 내장된 조명을 제거해 커스텀 조명만 사용
-				const lightsToRemove: THREE.Object3D[] = [];
-				model.traverse((child) => {
-					if ((child as THREE.Light).isLight) lightsToRemove.push(child);
-				});
-				lightsToRemove.forEach((light) => {
-					if (light.parent) light.parent.remove(light);
-				});
-
 				scene.add(model);
 
 				const buildingGroups: Record<string, THREE.Object3D> = {};
 				const warnings: THREE.Mesh[] = [];
 				const windows: THREE.Mesh[] = [];
 
+				// 모델 직계 자식을 건물 그룹으로 등록
+				for (const child of model.children) {
+					if (child.name) buildingGroups[child.name] = child;
+				}
+
 				model.traverse((child) => {
-					// userData.bld_name 이 있는 노드를 건물 그룹으로 등록
-					if (child.userData?.bld_name) {
-						const displayName = child.userData.bld_name as string;
-						buildingGroups[displayName] = child;
-					}
 					if ((child as THREE.Mesh).isMesh) {
 						const mesh = child as THREE.Mesh;
 						mesh.castShadow = true;
