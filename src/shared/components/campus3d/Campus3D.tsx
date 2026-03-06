@@ -12,7 +12,7 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { getSkyParams } from "./buildingData";
 import { useCampus3dStore } from "./campus3dStore";
 import type { TimeMode } from "./types";
-import { useGLTFModel } from "./useGLTFModel";
+import { use3DModel } from "./use3DModel";
 
 /* ============================================================================
  * 상수
@@ -413,7 +413,7 @@ function MinimapRenderer() {
 
 /* ============================================================================
  * CampusScene — Canvas 내부 R3F 씬 컴포넌트 (props 없음)
- * useGLTFModel을 직접 호출하고, 로컬 mesh ref들을 SceneAnimator에 전달
+ * use3DModel을 직접 호출하고, 로컬 mesh ref들을 SceneAnimator에 전달
  * ============================================================================ */
 function CampusScene() {
 	const { camera, scene, gl } = useThree();
@@ -435,7 +435,7 @@ function CampusScene() {
 		smokesRef,
 		warningMeshesRef,
 		setWarningBuildings,
-	} = useGLTFModel();
+	} = use3DModel();
 
 	// warningBuildings 변경 감지 → setWarningBuildings 호출
 	const warningBuildings = useCampus3dStore((s) => s.warningBuildings);
