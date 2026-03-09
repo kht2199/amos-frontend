@@ -1,4 +1,4 @@
-import type { SkyParams } from "./types";
+import type { SkyParams } from "../types";
 
 /* ============================================================================
  * Sky & Lighting System

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { loadCompressedGLB } from "../../lib/loaders";
-import { useCampus3dStore } from "./campus3dStore";
+import { loadCompressedGLB } from "../../../lib/loaders";
+import { useCampus3dStore } from "../store/campus3dStore";
 
 /* ============================================================================
  * use3DModel — GLTF 모델 로드 훅 (R3F 버전)

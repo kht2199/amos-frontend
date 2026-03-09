@@ -1,7 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useCallback, useRef } from "react";
 import * as THREE from "three";
-import { useCampus3dStore } from "./campus3dStore";
+import { useCampus3dStore } from "../store/campus3dStore";
 
 export const MM_SIZE = 180;
 export const MM_MARGIN = 12;

@@ -1,4 +1,4 @@
-import { useCampus3dStore } from "./campus3dStore";
+import { useCampus3dStore } from "../store/campus3dStore";
 
 export function LoadingOverlay() {
 	const loading = useCampus3dStore((s) => s.loading);

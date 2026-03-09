@@ -1,7 +1,7 @@
 import type * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { create } from "zustand";
-import type { TimeMode } from "./types";
+import type { TimeMode } from "../types";
 
 type BuildingBox = { corners: THREE.Vector3[]; center: THREE.Vector3 };
 
