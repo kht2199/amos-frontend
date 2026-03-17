@@ -2,7 +2,6 @@ import { defineConfig } from "@kubb/core";
 import { pluginOas } from "@kubb/plugin-oas";
 import { pluginReactQuery } from "@kubb/plugin-react-query";
 import { pluginTs } from "@kubb/plugin-ts";
-import { pluginZod } from "@kubb/plugin-zod";
 
 const excludeTags = [{ type: "tag" as const, pattern: /^Notification$/ }];
 
@@ -20,10 +19,6 @@ export default defineConfig({
 		pluginOas(),
 		pluginTs({
 			output: { path: "models" },
-			exclude: excludeTags,
-		}),
-		pluginZod({
-			output: { path: "zod" },
 			exclude: excludeTags,
 		}),
 		pluginReactQuery({

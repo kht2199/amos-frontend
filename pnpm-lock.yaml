@@ -56,9 +56,6 @@ importers:
       three-stdlib:
         specifier: ^2.36.1
         version: 2.36.1(three@0.169.0)
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
       zustand:
         specifier: ^5.0.11
         version: 5.0.11(@types/react@18.3.28)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
@@ -81,9 +78,6 @@ importers:
       '@kubb/plugin-ts':
         specifier: ^4.21.2
         version: 4.21.2(@kubb/react-fabric@0.13.1)(typescript@5.9.3)
-      '@kubb/plugin-zod':
-        specifier: ^4.21.2
-        version: 4.21.2(typescript@5.9.3)
       '@playwright/test':
         specifier: ^1.58.2
         version: 1.58.2
@@ -3369,9 +3363,6 @@ packages:
   yoctocolors@2.1.2:
     resolution: {integrity: sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==}
     engines: {node: '>=18'}
-
-  zod@4.3.6:
-    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
   zrender@5.4.0:
     resolution: {integrity: sha512-rOS09Z2HSVGFs2dn/TuYk5BlCaZcVe8UDLLjj1ySYF828LATKKdxuakSZMvrDz54yiKPDYVfjdKqcX8Jky3BIA==}
@@ -6954,8 +6945,6 @@ snapshots:
   yocto-queue@1.2.2: {}
 
   yoctocolors@2.1.2: {}
-
-  zod@4.3.6: {}
 
   zrender@5.4.0:
     dependencies:
