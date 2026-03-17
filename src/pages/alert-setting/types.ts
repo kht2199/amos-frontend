@@ -20,6 +20,7 @@ export interface PropertyRecord {
 export interface RecipientRecord {
 	id: number;
 	name: string;
+	userTag: string;
 	receive: boolean;
 }
 
@@ -32,28 +33,18 @@ export interface DetailRecord {
 }
 
 export const categoryColumns: ColDef<CategoryRecord>[] = [
-	{ field: "id", headerName: "ID", width: 70 },
-	{
-		field: "categoryType",
-		headerName: "Category Type",
-		flex: 1,
-		minWidth: 130,
-	},
-	{
-		field: "categoryCode",
-		headerName: "Category Code",
-		flex: 1,
-		minWidth: 130,
-	},
-	{ field: "groupCode", headerName: "Group Code", flex: 1, minWidth: 120 },
-	{ field: "description", headerName: "Description", flex: 1.5, minWidth: 180 },
+	{ field: "id", headerName: "FAB_ID", width: 80 },
+	{ field: "categoryType", headerName: "CATG_TYP", flex: 1, minWidth: 110 },
+	{ field: "categoryCode", headerName: "CATG_CD", flex: 1, minWidth: 110 },
+	{ field: "groupCode", headerName: "IDC_GRP_CD", flex: 1, minWidth: 120 },
+	{ field: "description", headerName: "INDEX", flex: 1.5, minWidth: 180 },
 ];
 
 export const propertyColumns: ColDef<PropertyRecord>[] = [
-	{ field: "property", headerName: "Property", flex: 1, minWidth: 150 },
+	{ field: "property", headerName: "PROPERTY", flex: 1, minWidth: 150 },
 	{
 		field: "value",
-		headerName: "Value",
+		headerName: "VALUE",
 		flex: 1.5,
 		minWidth: 200,
 		editable: true,
@@ -61,12 +52,13 @@ export const propertyColumns: ColDef<PropertyRecord>[] = [
 ];
 
 export const recipientColumns: ColDef<RecipientRecord>[] = [
-	{ field: "id", headerName: "ID", width: 70 },
-	{ field: "name", headerName: "성명", flex: 1, minWidth: 120 },
+	{ field: "id", headerName: "EMP_NO", width: 90 },
+	{ field: "name", headerName: "NAME", flex: 1, minWidth: 120 },
+	{ field: "userTag", headerName: "USER_TAG", flex: 1, minWidth: 120 },
 	{
 		field: "receive",
-		headerName: "수신",
-		width: 80,
+		headerName: "RECEIVED",
+		width: 100,
 		cellDataType: "boolean",
 		editable: true,
 	},

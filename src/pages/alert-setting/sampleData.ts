@@ -80,8 +80,9 @@ export function generateProperties(categoryId: number): PropertyRecord[] {
 
 export function generateRecipients(categoryId: number): RecipientRecord[] {
 	return NAMES.map((name, i) => ({
-		id: i + 1,
+		id: 1000 + i + 1,
 		name,
+		userTag: `USR${String(i + 1).padStart(3, "0")}`,
 		receive: (i + categoryId) % 3 === 0,
 	}));
 }
