@@ -5,7 +5,7 @@ import {
 	type RowClickedEvent,
 } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { Button, Card, Form, Select, Tabs, Typography } from "antd";
+import { Button, Card, Form, Select, Typography } from "antd";
 import { useCallback, useMemo, useRef, useState } from "react";
 import {
 	generateCategories,
@@ -72,51 +72,6 @@ export default function AlertSettingPage() {
 		},
 		[],
 	);
-
-	const tabItems = [
-		{
-			key: "email",
-			label: "Email",
-			children: (
-				<div className="ag-theme-quartz" style={{ height: "100%" }}>
-					<AgGridReact
-						rowData={recipients}
-						columnDefs={recipientColumns}
-						getRowId={(p) => p.data.id.toString()}
-						singleClickEdit={true}
-					/>
-				</div>
-			),
-		},
-		{
-			key: "phone",
-			label: "Phone",
-			children: (
-				<div className="ag-theme-quartz" style={{ height: "100%" }}>
-					<AgGridReact
-						rowData={recipients}
-						columnDefs={recipientColumns}
-						getRowId={(p) => p.data.id.toString()}
-						singleClickEdit={true}
-					/>
-				</div>
-			),
-		},
-		{
-			key: "sound",
-			label: "Sound",
-			children: (
-				<div className="ag-theme-quartz" style={{ height: "100%" }}>
-					<AgGridReact
-						rowData={recipients}
-						columnDefs={recipientColumns}
-						getRowId={(p) => p.data.id.toString()}
-						singleClickEdit={true}
-					/>
-				</div>
-			),
-		},
-	];
 
 	return (
 		<div
@@ -197,14 +152,16 @@ export default function AlertSettingPage() {
 				<Card
 					title="알림 설정"
 					style={cardStyle}
-					styles={{ body: { ...cardBodyStyle, overflow: "hidden" } }}
+					styles={{ body: cardBodyStyle }}
 				>
-					<Tabs
-						defaultActiveKey="email"
-						size="small"
-						className="tabs-fill-height"
-						items={tabItems}
-					/>
+					<div className="ag-theme-quartz" style={{ height: "100%" }}>
+						<AgGridReact
+							rowData={recipients}
+							columnDefs={recipientColumns}
+							getRowId={(p) => p.data.id.toString()}
+							singleClickEdit={true}
+						/>
+					</div>
 				</Card>
 
 				{/* 테이블 4: 상세 항목 */}
