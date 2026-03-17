@@ -4,25 +4,31 @@ import { pluginReactQuery } from "@kubb/plugin-react-query";
 import { pluginTs } from "@kubb/plugin-ts";
 import { pluginZod } from "@kubb/plugin-zod";
 
+const excludeTags = [{ type: "tag" as const, pattern: /^Notification$/ }];
+
 export default defineConfig({
 	input: {
-		// TODO: Replace with your actual OpenAPI spec URL or file path
-		path: "./openapi.json",
+		path: "http://localhost:8080/v3/api-docs",
 	},
 	output: {
-		path: "./src",
+		path: "./src/api",
 		clean: true,
+		format: "biome",
+		lint: "biome",
 	},
 	plugins: [
 		pluginOas(),
 		pluginTs({
 			output: { path: "models" },
+			exclude: excludeTags,
 		}),
 		pluginZod({
 			output: { path: "zod" },
+			exclude: excludeTags,
 		}),
 		pluginReactQuery({
 			output: { path: "hooks" },
+			exclude: excludeTags,
 		}),
 	],
 });

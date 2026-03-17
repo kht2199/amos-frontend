@@ -119,8 +119,12 @@ export default function DefaultLayout() {
 			/>
 			<Content
 				style={{
-					padding: 0,
+					display: "flex",
+					gap: 12,
+					padding: 16,
+					overflow: "hidden",
 					background: "#f5f5f5",
+					height: "calc(100vh - 114px)",
 				}}
 			>
 				<Outlet />

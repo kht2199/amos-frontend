@@ -6,15 +6,7 @@ import { resetCameraView } from "./components/campus3d/ui/SceneControls";
 
 export default function MainPage() {
 	return (
-		<div
-			style={{
-				height: "calc(100vh - 114px)",
-				display: "flex",
-				gap: 12,
-				padding: 16,
-				overflow: "hidden",
-			}}
-		>
+		<>
 			{/* Canvas + 관제 Site */}
 			<Card
 				style={{ flex: 1, overflow: "hidden" }}
@@ -57,6 +49,6 @@ export default function MainPage() {
 			>
 				<AlarmPanel />
 			</Card>
-		</div>
+		</>
 	);
 }
