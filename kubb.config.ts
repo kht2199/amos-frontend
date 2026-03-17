@@ -20,10 +20,12 @@ export default defineConfig({
 		pluginTs({
 			output: { path: "models" },
 			exclude: excludeTags,
+			group: { type: "tag" },
 		}),
 		pluginReactQuery({
 			output: { path: "hooks" },
 			exclude: excludeTags,
+			group: { type: "tag" },
 		}),
 	],
 });
