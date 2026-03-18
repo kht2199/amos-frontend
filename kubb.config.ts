@@ -18,7 +18,11 @@ export default defineConfig({
 	},
 	plugins: [
 		pluginOas(),
-		pluginClient(),
+		pluginClient({
+			output: { path: "clients" },
+			exclude: excludeTags,
+			group: { type: "tag" },
+		}),
 		pluginTs({
 			output: { path: "models" },
 			exclude: excludeTags,
