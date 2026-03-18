@@ -4,7 +4,7 @@ import { pluginOas } from "@kubb/plugin-oas";
 import { pluginReactQuery } from "@kubb/plugin-react-query";
 import { pluginTs } from "@kubb/plugin-ts";
 
-const excludeTags = [{ type: "tag" as const, pattern: /^Notification$/ }];
+const excludeTags = [{ type: "tag" as const, pattern: /^fx-/ }];
 
 export default defineConfig({
 	input: {
