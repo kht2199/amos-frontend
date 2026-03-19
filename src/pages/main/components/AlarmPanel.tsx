@@ -78,17 +78,16 @@ function LevelSummaryCard({
 	const { border, background, color } = STATE_CARD_STYLE[state];
 	return (
 		<Card
-			style={{
-				flex: 1,
-				border: `1px solid ${border}`,
-				background,
-				textAlign: "center",
-				borderRadius: 0,
-			}}
+			className="alarm-state-card"
+			style={{ border: `1px solid ${border}`, background }}
 			styles={{ body: { padding: "6px 4px" } }}
 		>
 			<Statistic
-				title={<span style={{ fontSize: 10, color }}>{label}</span>}
+				title={
+					<span className="alarm-stat-title" style={{ color }}>
+						{label}
+					</span>
+				}
 				value={count}
 				valueStyle={{ fontSize: 18, color }}
 			/>
@@ -101,42 +100,33 @@ function AlarmCardItem({ alarm }: { alarm: Alarm }) {
 	const { border, background, color, subColor } = STATE_ALARM_STYLE[state];
 	return (
 		<Card
-			style={{
-				border: `1px solid ${border}`,
-				background,
-				marginBottom: 6,
-				borderRadius: 0,
-			}}
+			className="alarm-card-item"
+			style={{ border: `1px solid ${border}`, background }}
 			styles={{ body: { padding: "6px 10px" } }}
 		>
-			<Flex justify="space-between" align="center" style={{ marginBottom: 4 }}>
+			<Flex
+				justify="space-between"
+				align="center"
+				className="alarm-item-header"
+			>
 				<Flex align="center" gap={6}>
 					<Badge status={STATE_BADGE_STATUS[state]} />
 					<Typography.Text
 						strong
-						style={{
-							fontSize: 14,
-							fontWeight: 700,
-							color,
-							whiteSpace: "nowrap",
-						}}
+						className="alarm-item-title"
+						style={{ color }}
 					>
 						{alarm.fabId}
 					</Typography.Text>
-					<Typography.Text
-						style={{ fontSize: 11, color, whiteSpace: "nowrap" }}
-					>
+					<Typography.Text className="alarm-item-msg" style={{ color }}>
 						{alarm.message}
 					</Typography.Text>
 				</Flex>
-				<Tag
-					color={STATE_TAG_COLOR[state]}
-					style={{ margin: "0 0 0 4px", fontSize: 10, flexShrink: 0 }}
-				>
+				<Tag color={STATE_TAG_COLOR[state]} className="alarm-level-tag">
 					L{alarm.level}
 				</Tag>
 			</Flex>
-			<Typography.Text style={{ fontSize: 10, color: subColor }}>
+			<Typography.Text className="alarm-item-time" style={{ color: subColor }}>
 				{alarm.occurredAt}
 			</Typography.Text>
 		</Card>
@@ -169,7 +159,7 @@ function TodaysAlarmContent() {
 
 	return (
 		<>
-			<Flex gap={4} style={{ marginBottom: 16 }}>
+			<Flex gap={4} className="alarm-level-summary">
 				{levelCounts.map((lv) => (
 					<LevelSummaryCard key={lv.label} {...lv} />
 				))}
@@ -181,7 +171,7 @@ function TodaysAlarmContent() {
 						orientation="left"
 						orientationMargin={0}
 						plain
-						style={{ margin: "10px 0 8px", fontSize: 14, fontWeight: 700 }}
+						className="alarm-divider"
 					>
 						Level {g.level}
 					</Divider>
@@ -198,12 +188,12 @@ export default function AlarmPanel() {
 	const [activeTab, setActiveTab] = useState("alarm");
 
 	return (
-		<div style={{ height: "100%", overflowY: "auto" }}>
+		<div className="alarm-panel-root">
 			<Tabs
 				activeKey={activeTab}
 				onChange={setActiveTab}
 				size="small"
-				style={{ padding: "0 10px" }}
+				className="alarm-panel-tabs"
 				destroyInactiveTabPane
 				items={[
 					{

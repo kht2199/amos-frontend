@@ -3,6 +3,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./styles/charts.css";
+import "./styles/layout.css";
+import "./styles/pages.css";
+import "./styles/campus3d.css";
 import "./lib/i18n";
 
 setConfig({

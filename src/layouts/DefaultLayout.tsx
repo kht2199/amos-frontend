@@ -39,30 +39,12 @@ export default function DefaultLayout() {
 	};
 
 	return (
-		<Layout style={{ minHeight: "100vh" }}>
-			<Header
-				style={{
-					display: "flex",
-					alignItems: "center",
-					padding: "0 16px",
-					background: "#000",
-					borderBottom: "none",
-				}}
-			>
+		<Layout className="layout-root">
+			<Header className="layout-header">
 				<button
 					type="button"
 					onClick={() => navigate("/")}
-					style={{
-						color: "#fff",
-						fontSize: 20,
-						fontWeight: 700,
-						letterSpacing: 2,
-						minWidth: 100,
-						cursor: "pointer",
-						background: "none",
-						border: "none",
-						padding: 0,
-					}}
+					className="layout-logo-btn"
 				>
 					AMOS
 				</button>
@@ -85,48 +67,29 @@ export default function DefaultLayout() {
 						items={navItems}
 						onClick={onClick}
 						triggerSubMenuAction="click"
-						style={{
-							flex: 1,
-							justifyContent: "flex-start",
-							background: "transparent",
-						}}
+						className="layout-nav"
 					/>
 				</ConfigProvider>
-				<div style={{ display: "flex", gap: 4 }}>
+				<div className="layout-header-actions">
 					<Button
 						type="text"
 						icon={<SearchOutlined />}
-						style={{ color: "#fff" }}
+						className="layout-header-btn"
 					/>
 					<Button
 						type="text"
 						icon={<BellOutlined />}
-						style={{ color: "#fff" }}
+						className="layout-header-btn"
 					/>
 					<Button
 						type="text"
 						icon={<UserOutlined />}
-						style={{ color: "#fff" }}
+						className="layout-header-btn"
 					/>
 				</div>
 			</Header>
-			<div
-				style={{
-					height: 50,
-					background: "#fff",
-					borderBottom: "1px solid #e0e0e0",
-				}}
-			/>
-			<Content
-				style={{
-					display: "flex",
-					gap: 12,
-					padding: 16,
-					overflow: "hidden",
-					background: "#f5f5f5",
-					height: "calc(100vh - 114px)",
-				}}
-			>
+			<div className="layout-sub-header" />
+			<Content className="layout-content">
 				<Outlet />
 			</Content>
 		</Layout>

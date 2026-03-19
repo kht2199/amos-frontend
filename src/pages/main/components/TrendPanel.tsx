@@ -9,10 +9,7 @@ import { useTransferStoreMetrics } from "../../../mocks/api/hooks/useTransferSto
 
 function ChartTitle({ children }: { children: React.ReactNode }) {
 	return (
-		<Typography.Text
-			strong
-			style={{ fontSize: 12, display: "block", marginBottom: 4, color: "#555" }}
-		>
+		<Typography.Text strong className="trend-chart-title">
 			{children}
 		</Typography.Text>
 	);
@@ -61,7 +58,7 @@ function CanceledQueueChart({ isActive }: { isActive: boolean }) {
 		if (isActive) instanceRef.current?.resize();
 	}, [isActive]);
 
-	return <div ref={chartRef} style={{ width: "100%", height: 160 }} />;
+	return <div ref={chartRef} className="chart-container--sm" />;
 }
 
 // ── OHT Usage 차트 ────────────────────────────────────────────────────────────
@@ -107,7 +104,7 @@ function OhtUsageChart({ isActive }: { isActive: boolean }) {
 		if (isActive) instanceRef.current?.resize();
 	}, [isActive]);
 
-	return <div ref={chartRef} style={{ width: "100%", height: 160 }} />;
+	return <div ref={chartRef} className="chart-container--sm" />;
 }
 
 // ── Queue Saving 차트 (스택 바 + 적색/청색 라인) ──────────────────────────────
@@ -204,14 +201,14 @@ function QueueSavingChart({ isActive }: { isActive: boolean }) {
 		if (isActive) instanceRef.current?.resize();
 	}, [isActive]);
 
-	return <div ref={chartRef} style={{ width: "100%", height: 220 }} />;
+	return <div ref={chartRef} className="chart-container--md" />;
 }
 
 // ── TrendPanel ────────────────────────────────────────────────────────────────
 
 export default function TrendPanel({ isActive }: { isActive: boolean }) {
 	return (
-		<div style={{ padding: "8px 0" }}>
+		<div className="trend-panel-root">
 			<ChartTitle>Canceled Queue</ChartTitle>
 			<CanceledQueueChart isActive={isActive} />
 

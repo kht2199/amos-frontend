@@ -15,10 +15,7 @@ const SEND_TYPE_OPTIONS = [
 
 export default function SearchFilters() {
 	return (
-		<Form
-			layout="inline"
-			style={{ marginBottom: 16, flexWrap: "wrap", gap: 8 }}
-		>
+		<Form layout="inline" className="search-filters">
 			<Form.Item label="FAB" name="fab">
 				<Select
 					placeholder="선택"

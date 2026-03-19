@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { forwardRef, useEffect, useImperativeHandle } from "react";
 import * as THREE from "three";
 import { useCampus3dStore } from "@/stores/campus3dStore";
+import "@/styles/campus3d.css";
 import { CAM_POS } from "./constants";
 import { CampusScene } from "./scene/CampusScene";
 import { LoadingOverlay } from "./ui/LoadingOverlay";
@@ -44,17 +45,10 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 	}));
 
 	return (
-		<div
-			style={{
-				width: "100%",
-				height: "100%",
-				display: "flex",
-				flexDirection: "column",
-			}}
-		>
+		<div className="campus3d-container">
 			<div
 				ref={(el) => useCampus3dStore.setState({ containerEl: el })}
-				style={{ flex: 1, position: "relative", minHeight: 0 }}
+				className="campus3d-canvas-wrapper"
 			>
 				<Canvas
 					frameloop="always"
@@ -79,11 +73,6 @@ const Campus3D = forwardRef<Campus3DRef>(function Campus3D(_, ref) {
 			</div>
 
 			<SceneControls />
-
-			<style>{`
-        @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        select option { background: #0a0a14; color: #ddd; }
-      `}</style>
 		</div>
 	);
 });

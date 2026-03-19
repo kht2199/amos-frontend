@@ -5,16 +5,8 @@ import SearchFilters from "./SearchFilters";
 
 export default function AlertHistoryPage() {
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				width: "100%",
-				height: "100%",
-				overflow: "hidden",
-			}}
-		>
-			<Typography.Title level={3} style={{ flexShrink: 0, marginBottom: 8 }}>
+		<div className="page-container">
+			<Typography.Title level={3} className="page-title">
 				알림 이력
 			</Typography.Title>
 			<SearchFilters />

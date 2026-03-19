@@ -1,0 +1,14 @@
+.chart-container {
+	width: 100%;
+	height: 400px;
+}
+
+.chart-container--sm {
+	width: 100%;
+	height: 160px;
+}
+
+.chart-container--md {
+	width: 100%;
+	height: 220px;
+}

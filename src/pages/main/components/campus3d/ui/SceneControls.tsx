@@ -36,32 +36,14 @@ export function SceneControls() {
 	}, []);
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				alignItems: "center",
-				gap: 10,
-				padding: "8px 12px",
-				background: "rgba(10,10,20,0.92)",
-				flexShrink: 0,
-				flexWrap: "wrap",
-			}}
-		>
+		<div className="scene-controls">
 			{/* 컨트롤 */}
-			<div
-				style={{
-					display: "flex",
-					gap: 10,
-					flex: 1,
-					flexWrap: "wrap",
-					alignItems: "center",
-				}}
-			>
+			<div className="scene-controls-inner">
 				{/* 건물 선택 */}
 				<select
 					value={focusBuilding}
 					onChange={(e) => handleFocusBuilding(e.target.value)}
-					style={selectStyle}
+					className="scene-select"
 				>
 					<option value="">건물 선택...</option>
 					{buildingNames.map((n) => (
@@ -72,8 +54,8 @@ export function SceneControls() {
 				</select>
 
 				{/* 카메라 X */}
-				<label style={inputLabelStyle}>
-					<span style={inputAxisLabelStyle}>X</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label">X</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ camXEl: el })}
 						type="number"
@@ -90,13 +72,13 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 60 }}
+						className="scene-input scene-input--w60"
 					/>
 				</label>
 
 				{/* 카메라 Y */}
-				<label style={inputLabelStyle}>
-					<span style={inputAxisLabelStyle}>Y</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label">Y</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ camYEl: el })}
 						type="number"
@@ -113,13 +95,13 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 60 }}
+						className="scene-input scene-input--w60"
 					/>
 				</label>
 
 				{/* 카메라 Z */}
-				<label style={inputLabelStyle}>
-					<span style={inputAxisLabelStyle}>Z</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label">Z</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ camZEl: el })}
 						type="number"
@@ -136,13 +118,13 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 60 }}
+						className="scene-input scene-input--w60"
 					/>
 				</label>
 
 				{/* 카메라 거리 */}
-				<label style={inputLabelStyle}>
-					<span style={inputAxisLabelStyle}>Dist</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label">Dist</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ camDEl: el })}
 						type="number"
@@ -164,22 +146,15 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 55 }}
+						className="scene-input scene-input--w55"
 					/>
 				</label>
 
-				<div
-					style={{
-						width: 1,
-						height: 20,
-						background: "rgba(255,255,255,0.15)",
-						alignSelf: "center",
-					}}
-				/>
+				<div className="scene-divider" />
 
 				{/* 타겟 TX */}
-				<label style={inputLabelStyle}>
-					<span style={{ ...inputAxisLabelStyle, color: "#666" }}>TX</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label scene-axis-label--muted">TX</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ tgtXEl: el })}
 						type="number"
@@ -196,13 +171,13 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 60, color: "#aaa" }}
+						className="scene-input scene-input--muted scene-input--w60"
 					/>
 				</label>
 
 				{/* 타겟 TY */}
-				<label style={inputLabelStyle}>
-					<span style={{ ...inputAxisLabelStyle, color: "#666" }}>TY</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label scene-axis-label--muted">TY</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ tgtYEl: el })}
 						type="number"
@@ -219,13 +194,13 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 60, color: "#aaa" }}
+						className="scene-input scene-input--muted scene-input--w60"
 					/>
 				</label>
 
 				{/* 타겟 TZ */}
-				<label style={inputLabelStyle}>
-					<span style={{ ...inputAxisLabelStyle, color: "#666" }}>TZ</span>
+				<label className="scene-input-label">
+					<span className="scene-axis-label scene-axis-label--muted">TZ</span>
 					<input
 						ref={(el) => useCampus3dStore.setState({ tgtZEl: el })}
 						type="number"
@@ -242,7 +217,7 @@ export function SceneControls() {
 						}}
 						onFocus={() => useCampus3dStore.setState({ camInputFocused: true })}
 						onBlur={() => useCampus3dStore.setState({ camInputFocused: false })}
-						style={{ ...inputStyle, width: 60, color: "#aaa" }}
+						className="scene-input scene-input--muted scene-input--w60"
 					/>
 				</label>
 
@@ -253,12 +228,7 @@ export function SceneControls() {
 						const val = e.target.value;
 						useCampus3dStore.setState({ warningBuildings: val ? [val] : [] });
 					}}
-					style={{
-						...selectStyle,
-						color: "#f87171",
-						border: "1px solid rgba(248,113,113,0.3)",
-						minWidth: 120,
-					}}
+					className="scene-select scene-select--warning"
 				>
 					<option value="">경고 건물...</option>
 					{buildingNames.map((n) => (
@@ -271,45 +241,3 @@ export function SceneControls() {
 		</div>
 	);
 }
-
-/* ── 공통 인라인 스타일 ─────────────────────────────────────────────────────── */
-const selectStyle: React.CSSProperties = {
-	background: "rgba(10,10,20,0.85)",
-	color: "#ddd",
-	border: "1px solid rgba(255,255,255,0.12)",
-	borderRadius: 8,
-	padding: "8px 14px",
-	fontSize: 13,
-	fontFamily: "'Noto Sans KR', sans-serif",
-	backdropFilter: "blur(12px)",
-	cursor: "pointer",
-	outline: "none",
-};
-
-const inputLabelStyle: React.CSSProperties = {
-	display: "flex",
-	alignItems: "center",
-	gap: 4,
-	background: "rgba(10,10,20,0.85)",
-	border: "1px solid rgba(255,255,255,0.12)",
-	borderRadius: 8,
-	padding: "0 10px",
-	backdropFilter: "blur(12px)",
-};
-
-const inputAxisLabelStyle: React.CSSProperties = {
-	fontSize: 11,
-	color: "#888",
-	fontFamily: "monospace",
-};
-
-const inputStyle: React.CSSProperties = {
-	background: "transparent",
-	color: "#ddd",
-	border: "none",
-	fontSize: 12,
-	fontFamily: "monospace",
-	outline: "none",
-	padding: "8px 0",
-	MozAppearance: "textfield",
-};

@@ -18,7 +18,7 @@ export default function MainPage() {
 		<>
 			{/* Canvas + 관제 Site */}
 			<Card
-				style={{ flex: 1, overflow: "hidden" }}
+				className="main-canvas-card"
 				styles={{
 					body: {
 						display: "flex",
@@ -29,9 +29,9 @@ export default function MainPage() {
 					},
 				}}
 			>
-				<div style={{ display: "flex", alignItems: "center" }}>
-					<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-						<span style={{ fontSize: 13 }}>관제 Site</span>
+				<div className="main-site-header">
+					<div className="main-site-selector">
+						<span className="main-site-label">관제 Site</span>
 						<Select
 							value={selectedSite ?? siteOptions[0]?.value}
 							options={siteOptions}
@@ -43,18 +43,18 @@ export default function MainPage() {
 					<Button
 						icon={<ReloadOutlined />}
 						size="small"
-						style={{ marginLeft: "auto" }}
+						className="main-reload-btn"
 						onClick={resetCameraView}
 					/>
 				</div>
-				<div style={{ flex: 1, position: "relative", minHeight: 0 }}>
+				<div className="main-canvas-body">
 					<Campus3D />
 				</div>
 			</Card>
 
 			{/* Alarm + Trend */}
 			<Card
-				style={{ width: 300, flexShrink: 0, overflow: "hidden" }}
+				className="main-alarm-card"
 				styles={{ body: { padding: 0, height: "100%" } }}
 			>
 				<AlarmPanel />

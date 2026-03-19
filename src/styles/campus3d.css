@@ -1,0 +1,142 @@
+/* ── Campus3D 컨테이너 ───────────────────────────────────────────────────── */
+
+.campus3d-container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.campus3d-canvas-wrapper {
+	flex: 1;
+	position: relative;
+	min-height: 0;
+}
+
+/* ── Loading Overlay ─────────────────────────────────────────────────────── */
+
+.campus3d-loading-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: rgba(10, 10, 20, 0.95);
+	z-index: 1000;
+}
+
+/* ── Scene Controls ──────────────────────────────────────────────────────── */
+
+.scene-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 12px;
+	background: rgba(10, 10, 20, 0.92);
+	flex-shrink: 0;
+	flex-wrap: wrap;
+}
+
+.scene-controls-inner {
+	display: flex;
+	gap: 10px;
+	flex: 1;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.scene-select {
+	background: rgba(10, 10, 20, 0.85);
+	color: #ddd;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 8px;
+	padding: 8px 14px;
+	font-size: 13px;
+	font-family: "Noto Sans KR", sans-serif;
+	backdrop-filter: blur(12px);
+	cursor: pointer;
+	outline: none;
+}
+
+.scene-select--warning {
+	color: #f87171;
+	border-color: rgba(248, 113, 113, 0.3);
+	min-width: 120px;
+}
+
+.scene-input-label {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	background: rgba(10, 10, 20, 0.85);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 8px;
+	padding: 0 10px;
+	backdrop-filter: blur(12px);
+}
+
+.scene-axis-label {
+	font-size: 11px;
+	color: #888;
+	font-family: monospace;
+}
+
+.scene-axis-label--muted {
+	color: #666;
+}
+
+.scene-input {
+	background: transparent;
+	color: #ddd;
+	border: none;
+	font-size: 12px;
+	font-family: monospace;
+	outline: none;
+	padding: 8px 0;
+	appearance: textfield;
+	-moz-appearance: textfield;
+}
+
+.scene-input--muted {
+	color: #aaa;
+}
+
+.scene-input--w60 {
+	width: 60px;
+}
+
+.scene-input--w55 {
+	width: 55px;
+}
+
+.scene-input::-webkit-outer-spin-button,
+.scene-input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.scene-divider {
+	width: 1px;
+	height: 20px;
+	background: rgba(255, 255, 255, 0.15);
+	align-self: center;
+}
+
+/* ── Campus3D 애니메이션 ─────────────────────────────────────────────────── */
+
+@keyframes slideIn {
+	from {
+		transform: translateX(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+.campus3d-container select option {
+	background: #0a0a14;
+	color: #ddd;
+}

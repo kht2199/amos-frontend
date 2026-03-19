@@ -48,25 +48,12 @@ export default function LlmPage() {
 	};
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				width: "100%",
-				height: "100%",
-				overflow: "hidden",
-			}}
-		>
-			<Typography.Title level={3} style={{ flexShrink: 0, marginBottom: 8 }}>
+		<div className="page-container">
+			<Typography.Title level={3} className="page-title">
 				LLM
 			</Typography.Title>
 			<Card
-				style={{
-					maxWidth: 800,
-					height: 500,
-					display: "flex",
-					flexDirection: "column",
-				}}
+				className="llm-chat-card"
 				styles={{
 					body: {
 						flex: 1,
@@ -77,21 +64,22 @@ export default function LlmPage() {
 				}}
 			>
 				<List
-					style={{ flex: 1, overflow: "auto", marginBottom: 16 }}
+					className="llm-message-list"
 					dataSource={messages}
 					locale={{ emptyText: "메시지를 입력하세요." }}
 					renderItem={(msg, i) => (
 						<List.Item
 							key={i}
-							style={{
-								justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-							}}
+							className={
+								msg.role === "user" ? "llm-msg-user" : "llm-msg-assistant"
+							}
 						>
 							<Card
-								style={{
-									maxWidth: "70%",
-									backgroundColor: msg.role === "user" ? "#e6f4ff" : "#f5f5f5",
-								}}
+								className={
+									msg.role === "user"
+										? "llm-bubble--user"
+										: "llm-bubble--assistant"
+								}
 							>
 								<Typography.Text strong>
 									{msg.role === "user" ? "나" : "AI"}
@@ -102,7 +90,7 @@ export default function LlmPage() {
 						</List.Item>
 					)}
 				/>
-				<Space.Compact style={{ width: "100%" }}>
+				<Space.Compact className="llm-input-area">
 					<TextArea
 						value={input}
 						onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -116,7 +104,7 @@ export default function LlmPage() {
 						}}
 						placeholder="메시지를 입력하세요..."
 						autoSize={{ minRows: 1, maxRows: 3 }}
-						style={{ flex: 1 }}
+						className="llm-textarea"
 					/>
 					<Button type="primary" onClick={handleSend} loading={loading}>
 						전송

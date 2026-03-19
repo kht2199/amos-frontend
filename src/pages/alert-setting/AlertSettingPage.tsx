@@ -87,20 +87,12 @@ export default function AlertSettingPage() {
 	);
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				width: "100%",
-				height: "100%",
-				overflow: "hidden",
-			}}
-		>
-			<Typography.Title level={3} style={{ flexShrink: 0, marginBottom: 8 }}>
+		<div className="page-container">
+			<Typography.Title level={3} className="page-title">
 				알람 설정
 			</Typography.Title>
 
-			<Form layout="inline" style={{ flexShrink: 0, marginBottom: 8 }}>
+			<Form layout="inline" className="page-toolbar">
 				<Form.Item label="Fab">
 					<Select
 						defaultValue="A"
@@ -116,23 +108,14 @@ export default function AlertSettingPage() {
 				</Form.Item>
 			</Form>
 
-			<div
-				style={{
-					flex: 1,
-					minHeight: 0,
-					display: "grid",
-					gridTemplateColumns: "1fr 1fr",
-					gridTemplateRows: "1fr 1fr",
-					gap: 12,
-				}}
-			>
+			<div className="alert-grid">
 				{/* 테이블 1: 카테고리 목록 */}
 				<Card
 					title="Category"
 					style={cardStyle}
 					styles={{ body: cardBodyStyle }}
 				>
-					<div className="ag-theme-quartz" style={{ height: "100%" }}>
+					<div className="ag-theme-quartz ag-grid-fill">
 						<AgGridReact
 							ref={categoryGridRef}
 							rowData={categories}
@@ -151,7 +134,7 @@ export default function AlertSettingPage() {
 					style={cardStyle}
 					styles={{ body: cardBodyStyle }}
 				>
-					<div className="ag-theme-quartz" style={{ height: "100%" }}>
+					<div className="ag-theme-quartz ag-grid-fill">
 						<AgGridReact
 							rowData={properties}
 							columnDefs={propertyColumns}
@@ -167,7 +150,7 @@ export default function AlertSettingPage() {
 					style={cardStyle}
 					styles={{ body: cardBodyStyle }}
 				>
-					<div className="ag-theme-quartz" style={{ height: "100%" }}>
+					<div className="ag-theme-quartz ag-grid-fill">
 						<AgGridReact
 							rowData={recipients}
 							columnDefs={recipientColumns}
@@ -185,7 +168,7 @@ export default function AlertSettingPage() {
 					style={cardStyle}
 					styles={{ body: cardBodyStyle }}
 				>
-					<div className="ag-theme-quartz" style={{ height: "100%" }}>
+					<div className="ag-theme-quartz ag-grid-fill">
 						<AgGridReact
 							rowData={details}
 							columnDefs={detailColumns}
