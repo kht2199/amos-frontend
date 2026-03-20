@@ -6,14 +6,7 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": [
-			"**",
-			"!!**/dist",
-			"!!.claude",
-			"!!public",
-			"!!src/models",
-			"!!src/api"
-		]
+		"includes": ["**", "!!**/dist", "!!.claude", "!!public"]
 	},
 	"formatter": {
 		"enabled": true,
