@@ -16,7 +16,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
 async function bootstrap() {
-	if (import.meta.env.VITE_USE_MOCK_ALARMS === "true") {
+	if (import.meta.env.VITE_USE_MOCK === "true") {
 		const { worker } = await import("./mocks/browser");
 		await worker.start({ onUnhandledRequest: "bypass" });
 	}
