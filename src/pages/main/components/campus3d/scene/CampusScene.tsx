@@ -52,10 +52,16 @@ export function CampusScene() {
 		setWarningBuildings(warningBuildings);
 	}, [warningBuildings, setWarningBuildings]);
 
-	// 씬 배경 초기화
+	// 씬 배경 초기화 (sky.png 로드, 없으면 검정 폴백)
 	// biome-ignore lint/correctness/useExhaustiveDependencies: scene is stable from useThree
 	useLayoutEffect(() => {
-		scene.background = new THREE.Color(0xffffff);
+		scene.background = new THREE.Color(0x000000);
+		const loader = new THREE.TextureLoader();
+		loader.load("/sky.png", (texture) => {
+			texture.offset.set(0, -0.5);
+			texture.repeat.set(1, 1);
+			scene.background = texture;
+		});
 	}, []);
 
 	// 카메라를 스토어에 등록
@@ -150,7 +156,7 @@ export function CampusScene() {
 				maxDistance={700}
 				minPolarAngle={Math.max(0.1, INIT_PHI - DEG15)}
 				maxPolarAngle={Math.min(Math.PI / 2 - 0.05, INIT_PHI + DEG15)}
-				enablePan
+				enablePan={false}
 			/>
 
 			{/* 건물 모델 */}
