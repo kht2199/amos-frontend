@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH = resolve(__dirname, "./mock-endpoints.config.mjs");
 const BASE_URL = process.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const API_DOCS_PATH = process.env.VITE_API_DOCS_PATH ?? "/v3/api-docs";
 
 function pathToFilename(path) {
 	return `${path
@@ -55,7 +56,7 @@ export const ENDPOINTS = [
 async function main() {
 	let spec;
 	try {
-		const res = await fetch(`${BASE_URL}/v3/api-docs`);
+		const res = await fetch(`${BASE_URL}${API_DOCS_PATH}`);
 		if (!res.ok) throw new Error(`HTTP ${res.status}`);
 		spec = await res.json();
 	} catch (err) {
