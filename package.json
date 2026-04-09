@@ -12,8 +12,8 @@
 		"preview": "vite preview",
 		"test": "vitest",
 		"test:run": "vitest run",
-		"generate": "kubb generate && node scripts/sync-mock-endpoints.mjs",
-		"mock": "node scripts/fetch-mock-data.mjs && node scripts/generate-handlers.mjs"
+		"generate": "kubb generate && node --env-file=.env scripts/sync-mock-endpoints.mjs",
+		"mock": "node --env-file=.env scripts/fetch-mock-data.mjs && node --env-file=.env scripts/generate-handlers.mjs"
 	},
 	"dependencies": {
 		"@amcharts/amcharts5": "^5.15.6",

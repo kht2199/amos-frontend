@@ -3,12 +3,17 @@ import { pluginClient } from "@kubb/plugin-client";
 import { pluginOas } from "@kubb/plugin-oas";
 import { pluginReactQuery } from "@kubb/plugin-react-query";
 import { pluginTs } from "@kubb/plugin-ts";
+import { loadEnv } from "vite";
+
+const env = loadEnv("development", process.cwd(), "");
+const baseUrl = env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const apiDocsPath = env.VITE_API_DOCS_PATH ?? "/v3/api-docs";
 
 const excludeTags = [{ type: "tag" as const, pattern: /^fx-/ }];
 
 export default defineConfig({
 	input: {
-		path: "http://localhost:8080/v3/api-docs",
+		path: `${baseUrl}${apiDocsPath}`,
 	},
 	output: {
 		path: "./src/api",
